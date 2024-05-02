@@ -11,3 +11,4 @@ def solution(X, A):
             res += 1
         if res == X:
             return i
+    return -1
