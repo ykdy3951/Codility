@@ -4,9 +4,11 @@
 def solution(A):
     # Implement your solution here
     N = len(A)
+    lsum = A[0]
+    rsum = sum(A[1:])
+    res = 100000001
     for i in range(1, N):
-        A[i] += A[i-1]
-    res = A[N-1]
-    for i in range(1,N):
-        res = min(abs(A[i-1]*2-A[N-1]),res)
+        lsum += A[i]
+        rsum -= A[i]
+        res = min(res, abs(lsum-rsum))
     return res
