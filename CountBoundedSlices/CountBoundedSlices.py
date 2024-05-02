@@ -1,48 +1,40 @@
 # you can write to stdout for debugging purposes, e.g.
 # print("this is a debug message")
-from heapq import heappush, heappop
 
 def solution(K, A):
     # Implement your solution here
-    max_heap, min_heap = [-A[0]], [A[0]]
+    MAX_INT = 1000000000
     alen = len(A)
-    fidx, sidx = 0, 0
-    flag = False
-    res = 0
 
-    while fidx < alen and sidx < alen:
-        if (-max_heap[0] - min_heap[0]) <= K:
-            sidx += 1
-            if sidx < alen:
-                heappush(max_heap, -A[sidx])
-                heappush(min_heap, A[sidx])
-            flag = True
-        else:
-            if flag:
-                n = sidx - fidx
-                res += n * (n - 1) // 2
-                flag = False
-            
-            temp = []
-            while A[fidx] != (-max_heap[0]):
-                temp.append(heappop(max_heap))
-            heappop(max_heap)
+    maxq, minq = [0] * (alen + 1), [0] * (alen + 1)
+    max_pos, min_pos = [0] * (alen + 1), [0] * (alen + 1)
 
-            for i in temp:
-                heappush(max_heap, i)
-            
-            temp = []
-            while A[fidx] != min_heap[0]:
-                temp.append(heappop(min_heap))
-            heappop(min_heap)
+    fmax, lmax, fmin, lmin, = 0, -1, 0, -1
 
-            for i in temp:
-                heappush(min_heap, i)
+    j, res = 0, 0
 
-            fidx += 1
+    for i in range(alen):
+        while j < alen:
+            while lmax >= fmax and maxq[lmax] <= A[j]:
+                lmax -= 1
+            lmax += 1
+            maxq[lmax] = A[j]
+            max_pos[lmax] = j
+        
+            while lmin >= fmin and minq[lmin] >= A[j]:
+                lmin -= 1
+            lmin += 1
+            minq[lmin] = A[j]
+            min_pos[lmin] = j
 
-    if flag:
-        n = sidx - fidx
-        res += n * (n - 1) // 2
-    
-    return res + alen
+            if (maxq[fmax] - minq[fmin] <= K):
+                j += 1
+            else:
+                break
+        res += (j - i)
+        if min_pos[fmin] == i:
+            fmin += 1
+        if max_pos[fmax] == i:
+            fmax += 1
+
+    return min(MAX_INT, res)
