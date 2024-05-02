@@ -18,4 +18,4 @@ def solution(T):
         else:
             return max(traversal(sub_tree.l, 0), traversal(sub_tree.r, 1))
 
-    return traversal(T, -1)
+    return max(0,traversal(T, -1))
