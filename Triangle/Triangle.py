@@ -4,15 +4,13 @@
 def solution(A):
     # Implement your solution here
     A.sort()
-    res = 0
     for i in range(len(A)):
         if A[i] > 0:
             A = A[i:]
             break
     
-    for i in range(0, len(A)-2):
-        for j in range(i+1, len(A)-1):
-            for k in range(j+1, len(A)):
-                if A[i] + A[j] > A[k]:
-                    res += 1
-    return res
+    for i in range(len(A)-2):
+        for j in range(i+1,len(A)-1):
+            if A[i] + A[j] > A[j+1]:
+                return 1
+    return 0
